@@ -352,7 +352,7 @@ gameDisplay = pygame.display.set_mode( (w_board,h_board) )
 
 
 ## DISPLAY SETUP
-pygame.display.set_caption("Pyxel")     ## window title
+pygame.display.set_caption("{} <<   PYXEL.py   >> {}".format(105*'.',105*'.'))     ## window title
 
 ## ENEMY SETUP
 enemy = Enemy()
@@ -470,7 +470,8 @@ while not gameExit:
                 enemy_list = []
                 coll_list=[]
                 box_laser_list = []
-                enemy_list = []                
+                enemy_list = []  
+                ct_collected = 0
                 col=[255,0,255]
                 tick_interval = 1.0
             elif hover(cursor_pos, button_bL.size, button_bL.pos):
