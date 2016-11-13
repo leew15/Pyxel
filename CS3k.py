@@ -352,7 +352,7 @@ gameDisplay = pygame.display.set_mode( (w_board,h_board) )
 
 
 ## DISPLAY SETUP
-pygame.display.set_caption("{} <<   PYXEL.py   >> {}".format(105*'.',105*'.'))     ## window title
+pygame.display.set_caption("Pyxel")     ## window title
 
 ## ENEMY SETUP
 enemy = Enemy()
