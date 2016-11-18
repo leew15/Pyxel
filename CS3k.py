@@ -292,8 +292,6 @@ def relative_center(coord_out, coord_in):
         
 
 ## ---------------------------------------------------------------- PYGAME.INIT
-print(pygame.init())
-
 
 ## -------------------------------------------------------------------- GLOBALS
 ## COLORS
@@ -352,7 +350,8 @@ gameDisplay = pygame.display.set_mode( (w_board,h_board) )
 
 
 ## DISPLAY SETUP
-pygame.display.set_caption("{} <<   PYXEL.py   >> {}".format(105*'.',105*'.'))     ## window title
+
+pygame.display.set_caption("Pyxel")     ## window title
 
 ## ENEMY SETUP
 enemy = Enemy()
@@ -456,6 +455,7 @@ while not gameExit:
             gameExit = True  
         if exitState and event.type == pygame.MOUSEBUTTONDOWN:
             if hover(cursor_pos, button_bR.size, button_bR.pos):
+                ct_collected = 0
                 exitState=False
                 menuState=True
                 mode1=False
@@ -470,10 +470,10 @@ while not gameExit:
                 enemy_list = []
                 coll_list=[]
                 box_laser_list = []
-                enemy_list = []  
-                ct_collected = 0
+                enemy_list = []                
                 col=[255,0,255]
                 tick_interval = 1.0
+                txtbox_d.text = ''
             elif hover(cursor_pos, button_bL.size, button_bL.pos):
                 exitState=False  #if exit, then leaves the loop
                 gameExit = True
@@ -551,15 +551,12 @@ while not gameExit:
         if mode1:
             tick_time += timer.get_frame_duration()
             if tick_time > tick_interval:
-                print('new_enemy!')
                 tick_time = 0
                 enemy = Enemy()
-                enemy_list.append(enemy)
-                print(len(enemy_list))  
+                enemy_list.append(enemy)  
                 if len(enemy_list) / 5 == 1:
                     chaser = Chaser_Enemy()
                     chaser_list.append(chaser)
-                    print(len(chaser_list))
                 if len(enemy_list) % 10 == 0:
                     possible_pos = [(380,280),(100,100),(100,460),(660,100),(660,460)]
                     for i in range(len(enemy_list)//10):
@@ -581,14 +578,11 @@ while not gameExit:
                 elif not box_laser.gone:
                     box_laser.charge()
                 ## if box_laser is charging and char.is_touching box or lasers  
-                if box_laser.charging and ( \
-                    char.is_Touching(box_laser.pos,40,40) or \
+                if box_laser.charging and (     char.is_Touching(box_laser.pos,40,40) or \
                     char.is_Touching((box_laser.pos[0]-20,box_laser.pos[1]+10),20,20) or \
                     char.is_Touching((box_laser.pos[0]+10,box_laser.pos[1]-20),20,20) or \
                     char.is_Touching((box_laser.pos[0]+40,box_laser.pos[1]+10),20,20) or \
-                    char.is_Touching((box_laser.pos[0]+10,box_laser.pos[1]+40),20,20) \
-                    ): 
-                    print('here') ##remove later
+                    char.is_Touching((box_laser.pos[0]+10,box_laser.pos[1]+40),20,20)    ): 
                     ## gamestate to exitstate
                     gameState=False
                     exitState=True
@@ -602,7 +596,6 @@ while not gameExit:
                     char.is_Touching((0,box_laser.pos[1]+10),20,1000) or \
                     char.is_Touching((box_laser.pos[0]+10,0),1000,20) \
                     ):
-                    print('there') ##remove later
                     ## gamestate to exitstate
                     gameState=False
                     exitState=True
@@ -631,7 +624,7 @@ while not gameExit:
             ## Enemies
             for enemy in enemy_list:
                 ## if character is touching enemy and enemy isn't growing, game over
-                if char.is_Touching(enemy.pos,enemy.size[0],enemy.size[1]) and not enemy.growing:
+                if char.is_Touching(enemy.pos,enemy.size[1],enemy.size[0]) and not enemy.growing:
                     ## gamestate to exitstate
                     gameState=False
                     exitState=True
@@ -660,17 +653,14 @@ while not gameExit:
                     
             ## spawns ENEMIES
             if tick_time > tick_interval:
-                print('new_enemy!')
                 tick_time = 0
                 enemy = Enemy()
                 enemy_list.append(enemy)
-                print(len(enemy_list)) 
                 
                 rd +=1 ## rounds since last coll spawn    
             
             ## spawns COL 
             if rd > every_rd:
-                print('--new_col--')
                 coll = Coll()
                 coll_list.append(coll)
                 rd = 0            
@@ -693,7 +683,6 @@ while not gameExit:
                 coll.color = (reds[red_ind],0,0)
                 ## if char.is_touching coll, collect item, even if growing
                 if char.is_Touching(coll.pos,20,20):
-                    print("COLLECTED")
                     coll.deactivate()
                     ct_collected +=1
                     coll_list.pop(coll_list.index(coll))
@@ -706,7 +695,7 @@ while not gameExit:
             ## Enemies
             for enemy in enemy_list:
                 ## if character is touching enemy and enemy isn't growing, game over
-                if char.is_Touching(enemy.pos,enemy.size[0],enemy.size[1]) and not enemy.growing:
+                if char.is_Touching(enemy.pos,enemy.size[1],enemy.size[0]) and not enemy.growing:
                     ## gamestate to exitstate
                     gameState=False
                     exitState=True
